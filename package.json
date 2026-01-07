@@ -1,0 +1,24 @@
+{
+  "name": "gateway-service-test",
+  "version": "1.0.0",
+  "description": "Simple gateway service test with NATS and Redis",
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc",
+    "start:gateway": "node dist/gateway/gateway.service.js",
+    "start:commands": "node dist/commands/commands.service.js"
+  },
+  "keywords": [],
+  "author": "bit0r1n",
+  "license": "MIT",
+  "type": "module",
+  "devDependencies": {
+    "@types/node": "^25.0.3",
+    "typescript": "^5.9.3"
+  },
+  "dependencies": {
+    "nats": "^2.29.3",
+    "oceanic.js": "^1.13.0",
+    "redis": "^5.10.0"
+  }
+}

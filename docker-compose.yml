@@ -1,0 +1,78 @@
+services:
+  nats:
+    image: nats:2.12.3-alpine3.22
+    restart: unless-stopped
+    command: >
+      -js
+      -store_dir=/data
+    volumes:
+      - nats_data:/data
+  redis:
+    image: redis:8.4.0-alpine3.22
+    restart: unless-stopped
+    volumes:
+      - redis_data:/data
+  discord-proxy:
+    image: discordjs/proxy:latest
+    restart: unless-stopped
+
+  gateway-1:
+    build:
+      context: .
+      target: gateway
+    restart: unless-stopped
+    environment:
+      - NATS_SERVER=nats://nats:4222
+      - NATS_MODE=core
+      - REDIS_URL=redis://redis:6379
+      - DISCORD_EVENTS_LISTEN=MESSAGE_CREATE,INTERACTION_CREATE
+      - DISCORD_GATEWAY_INTENTS=GUILDS,GUILD_MESSAGES,MESSAGE_CONTENT
+      - DISCORD_API_URL=http://discord-proxy:8080/api
+      - DISCORD_TOKEN=${DISCORD_TOKEN}
+      - DISCORD_MAX_SHARDS=4
+      - DISCORD_FIRST_SHARD_ID=0
+      - DISCORD_LAST_SHARD_ID=1
+    depends_on:
+      - nats
+      - redis
+      - discord-proxy
+  gateway-2:
+    build:
+      context: .
+      target: gateway
+    restart: unless-stopped
+    environment:
+      - NATS_SERVER=nats://nats:4222
+      - NATS_MODE=core
+      - REDIS_URL=redis://redis:6379
+      - DISCORD_EVENTS_LISTEN=MESSAGE_CREATE,INTERACTION_CREATE
+      - DISCORD_GATEWAY_INTENTS=GUILDS,GUILD_MESSAGES,MESSAGE_CONTENT
+      - DISCORD_API_URL=http://discord-proxy:8080/api
+      - DISCORD_TOKEN=${DISCORD_TOKEN}
+      - DISCORD_MAX_SHARDS=4
+      - DISCORD_FIRST_SHARD_ID=2
+      - DISCORD_LAST_SHARD_ID=3
+    depends_on:
+      - nats
+      - redis
+      - discord-proxy
+  commands:
+    build:
+      context: .
+      target: commands
+    restart: unless-stopped
+    deploy:
+      replicas: 2
+    environment:
+      - NATS_SERVER=nats://nats:4222
+      - NATS_MODE=core
+      - REDIS_URL=redis://redis:6379
+      - DISCORD_TOKEN=${DISCORD_TOKEN}
+      - DISCORD_API_URL=http://discord-proxy:8080/api
+    depends_on:
+      - nats
+      - redis
+      - discord-proxy
+volumes:
+  nats_data:
+  redis_data:
