@@ -22,7 +22,7 @@ services:
       target: gateway
     restart: unless-stopped
     environment:
-      - NATS_SERVER=nats://nats:4222
+      - NATS_URL=nats://nats:4222
       - NATS_MODE=core
       - REDIS_URL=redis://redis:6379
       - DISCORD_EVENTS_LISTEN=MESSAGE_CREATE,INTERACTION_CREATE
@@ -42,7 +42,7 @@ services:
       target: gateway
     restart: unless-stopped
     environment:
-      - NATS_SERVER=nats://nats:4222
+      - NATS_URL=nats://nats:4222
       - NATS_MODE=core
       - REDIS_URL=redis://redis:6379
       - DISCORD_EVENTS_LISTEN=MESSAGE_CREATE,INTERACTION_CREATE
@@ -64,7 +64,7 @@ services:
     deploy:
       replicas: 2
     environment:
-      - NATS_SERVER=nats://nats:4222
+      - NATS_URL=nats://nats:4222
       - NATS_MODE=core
       - REDIS_URL=redis://redis:6379
       - DISCORD_TOKEN=${DISCORD_TOKEN}
