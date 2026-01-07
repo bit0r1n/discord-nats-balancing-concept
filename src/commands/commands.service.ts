@@ -75,9 +75,9 @@ if (natsMode === NatsMode.JetStream) {
   await messageConsumer.consume({
     callback: (msg) => {
       const packet = msg.json<GatewayPayload<RawMessage | RawInteraction>>()
-      if (packet.topic === messageSubject) {
+      if (packet.topic === 'MESSAGE_CREATE') {
         handleMessage(handlerContext, packet as GatewayPayload<RawMessage>).catch(console.error)
-      } else if (packet.topic === interactionSubject) {
+      } else if (packet.topic === 'INTERACTION_CREATE') {
         handleInteraction(handlerContext, packet as GatewayPayload<RawInteraction>).catch(console.error)
       }
       msg.ack()

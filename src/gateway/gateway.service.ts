@@ -126,7 +126,7 @@ bot.on('packet', async (packet, shardId) => {
     const subject = buildEventSubject(eventName)
 
     if (natsMode === NatsMode.JetStream) {
-      await jetstream.publish(subject, payload).catch(console.error)
+      jetstream.publish(subject, payload).catch(console.error)
     } else {
       nats.publish(subject, payload)
     }
