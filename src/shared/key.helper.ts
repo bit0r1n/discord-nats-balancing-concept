@@ -2,13 +2,13 @@ const discordPrefix = 'discord_cache'
 
 // sets
 export const buildGuildChannelsSetKey = (guildId: string) =>
-  `${discordPrefix}:guild_channels:${guildId}`
+  `${discordPrefix}:guilds:${guildId}:channels`
 export const buildGuildThreadsSetKey = (guildId: string) =>
-  `${discordPrefix}:guild_threads:${guildId}`
+  `${discordPrefix}:guilds:${guildId}:threads`
 export const buildGuildMembersSetKey = (guildId: string) =>
-  `${discordPrefix}:guild_members:${guildId}`
+  `${discordPrefix}:guilds:${guildId}:members`
 export const buildGuildRolesSetKey = (guildId: string) =>
-  `${discordPrefix}:guild_roles:${guildId}`
+  `${discordPrefix}:guilds:${guildId}:roles`
 
 // entities
 export const buildGuildKey = (guildId: string) =>

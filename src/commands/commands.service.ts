@@ -68,11 +68,11 @@ const handlerContext: HandlerContext = {
 if (natsMode === NatsMode.JetStream) {
   console.log('Using NATS JetStream mode')
 
-  const messageConsumer = await jetstream.consumers.get(
+  const commandsConsumer = await jetstream.consumers.get(
     streamName,
     serviceName,
   )
-  await messageConsumer.consume({
+  await commandsConsumer.consume({
     callback: (msg) => {
       const packet = msg.json<GatewayPayload<RawMessage | RawInteraction>>()
       if (packet.topic === 'MESSAGE_CREATE') {
