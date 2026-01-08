@@ -114,9 +114,10 @@ bot.on('packet', async (packet, shardId) => {
   const eventName = packet.t
 
   // broadcast event
-  if (eventsToListen.includes(eventName)) {
-    if (eventName === 'GUILD_CREATE' && !bot.ready) return // initial guilds loading
+  const shouldBroadcast = eventsToListen.includes(eventName) &&
+    !(eventName === 'GUILD_CREATE' && !bot.ready) // skip initial guilds loading
 
+  if (shouldBroadcast) {
     const payload = codec.encode({
       shard_id: shardId,
       topic: packet.t,
